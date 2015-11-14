@@ -104,35 +104,27 @@ static int HandlerFamily;
     virtual bool enter(JSContext *cx, JS::HandleObject proxy, JS::HandleId id,  \
                        _base::Action action, bool *bp) const override           \
     {                                                                           \
-        return mTraps.enter                                                     \
-               ? mTraps.enter(cx, proxy, id, action, bp)                        \
-               : _base::enter(cx, proxy, id, action, bp);                       \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     /* Standard internal methods. */                                            \
     virtual bool enumerate(JSContext *cx, JS::HandleObject proxy,               \
                            JS::MutableHandleObject objp) const override         \
     {                                                                           \
-        return mTraps.enumerate                                                 \
-               ? mTraps.enumerate(cx, proxy, objp)                              \
-               : _base::enumerate(cx, proxy, objp);                             \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     virtual bool has(JSContext* cx, JS::HandleObject proxy,                     \
                      JS::HandleId id, bool *bp) const override                  \
     {                                                                           \
-        return mTraps.has                                                       \
-               ? mTraps.has(cx, proxy, id, bp)                                  \
-               : _base::has(cx, proxy, id, bp);                                 \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     virtual bool get(JSContext* cx, JS::HandleObject proxy,                     \
                      JS::HandleObject receiver,                                 \
                      JS::HandleId id, JS::MutableHandleValue vp) const override \
     {                                                                           \
-        return mTraps.get                                                       \
-               ? mTraps.get(cx, proxy, receiver, id, vp)                        \
-               : _base::get(cx, proxy, receiver, id, vp);                       \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     virtual bool set(JSContext* cx, JS::HandleObject proxy,                     \
@@ -140,136 +132,99 @@ static int HandlerFamily;
                      JS::HandleId id, JS::MutableHandleValue vp,                \
                      JS::ObjectOpResult &result) const override                 \
     {                                                                           \
-        return mTraps.set                                                       \
-               ? mTraps.set(cx, proxy, receiver, id, vp, result)                \
-               : _base::set(cx, proxy, receiver, id, vp, result);               \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     virtual bool call(JSContext* cx, JS::HandleObject proxy,                    \
                       const JS::CallArgs &args) const override                  \
     {                                                                           \
-        return mTraps.call                                                      \
-               ? mTraps.call(cx, proxy, args)                                   \
-               : _base::call(cx, proxy, args);                                  \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     virtual bool construct(JSContext* cx, JS::HandleObject proxy,               \
                            const JS::CallArgs &args) const override             \
     {                                                                           \
-        return mTraps.construct                                                 \
-               ? mTraps.construct(cx, proxy, args)                              \
-               : _base::construct(cx, proxy, args);                             \
+        return false;                                                           \
     }                                                                           \
                                                                                 \
     /* Spidermonkey extensions. */                                              \
     virtual bool hasOwn(JSContext* cx, JS::HandleObject proxy, JS::HandleId id, \
                         bool* bp) const override                                \
     {                                                                           \
-        return mTraps.hasOwn                                                    \
-               ? mTraps.hasOwn(cx, proxy, id, bp)                               \
-               : _base::hasOwn(cx, proxy, id, bp);                              \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual bool getOwnEnumerablePropertyKeys(JSContext* cx,                    \
                                               JS::HandleObject proxy,           \
                                               JS::AutoIdVector &props) const override \
     {                                                                           \
-        return mTraps.getOwnEnumerablePropertyKeys                              \
-               ? mTraps.getOwnEnumerablePropertyKeys(cx, proxy, props)          \
-               : _base::getOwnEnumerablePropertyKeys(cx, proxy, props);         \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual bool nativeCall(JSContext* cx, JS::IsAcceptableThis test,           \
                             JS::NativeImpl impl,                                \
                             JS::CallArgs args) const override                   \
     {                                                                           \
-        return mTraps.nativeCall                                                \
-               ? mTraps.nativeCall(cx, test, impl, args)                        \
-               : _base::nativeCall(cx, test, impl, args);                       \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual bool hasInstance(JSContext* cx, JS::HandleObject proxy,             \
                              JS::MutableHandleValue v, bool* bp) const override \
     {                                                                           \
-        return mTraps.hasInstance                                               \
-               ? mTraps.hasInstance(cx, proxy, v, bp)                           \
-               : _base::hasInstance(cx, proxy, v, bp);                          \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual bool objectClassIs(JS::HandleObject obj,                            \
                                js::ESClassValue classValue,                     \
                                JSContext* cx) const override                    \
     {                                                                           \
-        return mTraps.objectClassIs                                             \
-               ? mTraps.objectClassIs(obj, classValue, cx)                      \
-               : _base::objectClassIs(obj, classValue, cx);                     \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual const char *className(JSContext *cx, JS::HandleObject proxy) const override\
     {                                                                           \
-        return mTraps.className                                                 \
-               ? mTraps.className(cx, proxy)                                    \
-               : _base::className(cx, proxy);                                   \
+        return nullptr; \
     }                                                                           \
                                                                                 \
     virtual JSString* fun_toString(JSContext* cx, JS::HandleObject proxy,       \
                                    unsigned indent) const override              \
     {                                                                           \
-        return mTraps.fun_toString                                              \
-               ? mTraps.fun_toString(cx, proxy, indent)                         \
-               : _base::fun_toString(cx, proxy, indent);                        \
+        return nullptr; \
     }                                                                           \
                                                                                 \
     virtual bool boxedValue_unbox(JSContext* cx, JS::HandleObject proxy,        \
                                   JS::MutableHandleValue vp) const override     \
     {                                                                           \
-        return mTraps.boxedValue_unbox                                          \
-               ? mTraps.boxedValue_unbox(cx, proxy, vp)                         \
-               : _base::boxedValue_unbox(cx, proxy, vp);                        \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual bool defaultValue(JSContext* cx, JS::HandleObject obj, JSType hint, \
                               JS::MutableHandleValue vp) const override         \
     {                                                                           \
-        return mTraps.defaultValue                                              \
-               ? mTraps.defaultValue(cx, obj, hint, vp)                         \
-               : _base::defaultValue(cx, obj, hint, vp);                        \
+        return false; \
     }                                                                           \
                                                                                 \
     virtual void trace(JSTracer* trc, JSObject* proxy) const override           \
     {                                                                           \
-        mTraps.trace                                                            \
-        ? mTraps.trace(trc, proxy)                                              \
-        : _base::trace(trc, proxy);                                             \
     }                                                                           \
                                                                                 \
     virtual void finalize(JSFreeOp* fop, JSObject* proxy) const override        \
     {                                                                           \
-        mTraps.finalize                                                         \
-        ? mTraps.finalize(fop, proxy)                                           \
-        : _base::finalize(fop, proxy);                                          \
     }                                                                           \
                                                                                 \
     virtual void objectMoved(JSObject* proxy,                                   \
                              const JSObject *old) const override                \
     {                                                                           \
-        mTraps.objectMoved                                                      \
-        ? mTraps.objectMoved(proxy, old)                                        \
-        : _base::objectMoved(proxy, old);                                       \
     }                                                                           \
                                                                                 \
     virtual bool isCallable(JSObject* obj) const override                       \
     {                                                                           \
-        return mTraps.isCallable                                                \
-               ? mTraps.isCallable(obj)                                         \
-               : _base::isCallable(obj);                                        \
+      return false; \
     }                                                                           \
                                                                                 \
     virtual bool isConstructor(JSObject* obj) const override                    \
     {                                                                           \
-        return mTraps.isConstructor                                             \
-               ? mTraps.isConstructor(obj)                                      \
-               : _base::isConstructor(obj);                                     \
+      return false; \
     }
 
 class WrapperProxyHandler : public js::Wrapper
@@ -300,17 +255,13 @@ class WrapperProxyHandler : public js::Wrapper
                                 JS::MutableHandle<JSPropertyDescriptor> desc,
                                 JS::ObjectOpResult &result) const override
     {
-        return mTraps.defineProperty
-               ? mTraps.defineProperty(cx, proxy, id, desc, result)
-               : js::Wrapper::defineProperty(cx, proxy, id, desc, result);
+      return false;
     }
 
     virtual bool ownPropertyKeys(JSContext *cx, JS::HandleObject proxy,
                                  JS::AutoIdVector &props) const override
     {
-        return mTraps.ownPropertyKeys
-               ? mTraps.ownPropertyKeys(cx, proxy, props)
-               : js::Wrapper::ownPropertyKeys(cx, proxy, props);
+      return false;
     }
 
     virtual bool delete_(JSContext *cx, JS::HandleObject proxy, JS::HandleId id,
