@@ -26,7 +26,7 @@ ifneq (,$(CARGO_FEATURE_DEBUGMOZJS))
 	CFLAGS += -g -O0 -DDEBUG -D_DEBUG
 endif
 
-CFLAGS += -I$(DEP_MOZJS_OUTDIR)/dist/include
+CFLAGS += -I$(CARGO_MANIFEST_DIR)/mozjs/include
 
 .PHONY: all
 all: $(OUT_DIR)/libjsglue.a

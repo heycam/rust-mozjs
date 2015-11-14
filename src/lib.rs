@@ -18,7 +18,6 @@ extern crate heapsize;
 extern crate libc;
 #[macro_use]
 extern crate log;
-extern crate mozjs_sys;
 extern crate num;
 extern crate rustc_serialize as serialize;
 
