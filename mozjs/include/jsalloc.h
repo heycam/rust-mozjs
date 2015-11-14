@@ -51,7 +51,7 @@ class TempAllocPolicy
      * Non-inline helper to call JSRuntime::onOutOfMemory with minimal
      * code bloat.
      */
-    JS_FRIEND_API(void *) onOutOfMemory(void *p, size_t nbytes);
+    JS_FRIEND_API(void *) onOutOfMemory(void *p, size_t nbytes) { return nullptr; }
 
   public:
     MOZ_IMPLICIT TempAllocPolicy(JSContext *cx) : cx_((ContextFriendFields *) cx) {} // :(
