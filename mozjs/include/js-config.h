@@ -34,6 +34,15 @@
 /* Define to 1 to perform extra assertions and heap poisoning. */
 /* #undef JS_CRASH_DIAGNOSTICS */
 
+#ifdef __linux__
+/* Define to 1 if the <endian.h> header is present and
+   useable.  See jscpucfg.h.  */
+#define JS_HAVE_ENDIAN_H 1
+
+/* Define to 1 if the <machine/endian.h> header is present and
+   useable.  See jscpucfg.h.  */
+/* #undef JS_HAVE_MACHINE_ENDIAN_H */
+#else
 /* Define to 1 if the <endian.h> header is present and
    useable.  See jscpucfg.h.  */
 /* #undef JS_HAVE_ENDIAN_H */
@@ -41,6 +50,7 @@
 /* Define to 1 if the <machine/endian.h> header is present and
    useable.  See jscpucfg.h.  */
 #define JS_HAVE_MACHINE_ENDIAN_H 1
+#endif
 
 /* Define to 1 if the <sys/isa_defs.h> header is present and
    useable.  See jscpucfg.h.  */
